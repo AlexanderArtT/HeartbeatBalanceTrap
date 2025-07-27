@@ -16,9 +16,6 @@ Implement a time-based trap that activates every 3rd block regardless of ETH tra
 
 **Contract: HeartbeatBalanceTrap.sol**
 
-pgsql
-Копировать
-Редактировать
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -42,17 +39,11 @@ contract HeartbeatBalanceTrap is ITrap {
         return (false, "");
     }
 }
-makefile
-Копировать
-Редактировать
 
 ## Response Contract
 
 **Contract: FrequentAlertReceiver.sol**
 
-csharp
-Копировать
-Редактировать
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -63,9 +54,7 @@ contract FrequentAlertReceiver {
         emit FrequentAlert("Frequent heartbeat alert triggered", block.number);
     }
 }
-csharp
-Копировать
-Редактировать
+
 
 ## Deployment & Setup
 
