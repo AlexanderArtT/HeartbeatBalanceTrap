@@ -16,6 +16,7 @@ Implement a time-based trap that activates every 3rd block regardless of ETH tra
 
 **Contract: HeartbeatBalanceTrap.sol**
 
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -39,6 +40,7 @@ contract HeartbeatBalanceTrap is ITrap {
         return (false, "");
     }
 }
+```
 
 ## Response Contract
 
@@ -55,7 +57,7 @@ contract FrequentAlertReceiver {
         emit FrequentAlert("Frequent heartbeat alert triggered", block.number);
     }
 }
-
+```
 
 
 ## Deployment & Setup
@@ -63,41 +65,36 @@ contract FrequentAlertReceiver {
 Deploy contracts with Foundry:
 
 bash
-Копировать
-Редактировать
+
+```solidity
 forge create src/FrequentAlertReceiver.sol:FrequentAlertReceiver \
   --rpc-url https://ethereum-hoodi-rpc.publicnode.com \
   --private-key 0xYOUR_PRIVATE_KEY
+```
 
+```solidity
 forge create src/HeartbeatBalanceTrap.sol:HeartbeatBalanceTrap \
   --rpc-url https://ethereum-hoodi-rpc.publicnode.com \
   --private-key 0xYOUR_PRIVATE_KEY
-go
-Копировать
-Редактировать
+```
 
 Update `drosera.toml`:
 
-toml
-Копировать
-Редактировать
 [traps.heartbeat]
+
 path = "out/HeartbeatBalanceTrap.sol/HeartbeatBalanceTrap.json"
+
 response_contract = "0xYOUR_FrequentAlertReceiver_ADDRESS"
+
 response_function = "notify()"
-yaml
-Копировать
-Редактировать
 
 Apply changes:
 
 bash
-Копировать
-Редактировать
+
+```solidity
 DROSERA_PRIVATE_KEY=0xYOUR_PRIVATE_KEY drosera apply
-markdown
-Копировать
-Редактировать
+```
 
 ## Testing the Trap
 - Wait for new blocks on the Ethereum Hoodi testnet.
