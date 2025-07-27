@@ -16,7 +16,9 @@ Implement a time-based trap that activates every 3rd block regardless of ETH tra
 
 **Contract: HeartbeatBalanceTrap.sol**
 
-```solidity
+pgsql
+Копировать
+Редактировать
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -40,10 +42,15 @@ contract HeartbeatBalanceTrap is ITrap {
         return (false, "");
     }
 }
-Response Contract
-Contract: FrequentAlertReceiver.sol
+makefile
+Копировать
+Редактировать
 
-solidity
+## Response Contract
+
+**Contract: FrequentAlertReceiver.sol**
+
+csharp
 Копировать
 Редактировать
 // SPDX-License-Identifier: MIT
@@ -56,7 +63,12 @@ contract FrequentAlertReceiver {
         emit FrequentAlert("Frequent heartbeat alert triggered", block.number);
     }
 }
-Deployment & Setup
+csharp
+Копировать
+Редактировать
+
+## Deployment & Setup
+
 Deploy contracts with Foundry:
 
 bash
@@ -69,7 +81,11 @@ forge create src/FrequentAlertReceiver.sol:FrequentAlertReceiver \
 forge create src/HeartbeatBalanceTrap.sol:HeartbeatBalanceTrap \
   --rpc-url https://ethereum-hoodi-rpc.publicnode.com \
   --private-key 0xYOUR_PRIVATE_KEY
-Update drosera.toml:
+go
+Копировать
+Редактировать
+
+Update `drosera.toml`:
 
 toml
 Копировать
@@ -78,33 +94,33 @@ toml
 path = "out/HeartbeatBalanceTrap.sol/HeartbeatBalanceTrap.json"
 response_contract = "0xYOUR_FrequentAlertReceiver_ADDRESS"
 response_function = "notify()"
+yaml
+Копировать
+Редактировать
+
 Apply changes:
 
 bash
 Копировать
 Редактировать
 DROSERA_PRIVATE_KEY=0xYOUR_PRIVATE_KEY drosera apply
-Testing the Trap
-Wait for new blocks on the Ethereum Hoodi testnet.
+markdown
+Копировать
+Редактировать
 
-On blocks divisible by 3, trap triggers with shouldRespond = true.
+## Testing the Trap
+- Wait for new blocks on the Ethereum Hoodi testnet.
+- On blocks divisible by 3, trap triggers with `shouldRespond = true`.
+- `FrequentAlert` event is emitted.
 
-FrequentAlert event is emitted.
+## Extensions & Improvements
+- Allow dynamic interval setting.
+- Add balance delta or gas usage checks.
+- Chain this trap with anomaly detectors.
+- Use `notify()` to ping webhooks or trigger automation flows.
 
-Extensions & Improvements
-Allow dynamic interval setting.
-
-Add balance delta or gas usage checks.
-
-Chain this trap with anomaly detectors.
-
-Use notify() to ping webhooks or trigger automation flows.
-
-Metadata
-Created: July 27, 2025
-
-Author: @Alexander_ArtT
-
-Telegram: @openagom
-
-Discord: alexanderart
+## Metadata
+- Created: July 27, 2025
+- Author: @Alexander_ArtT
+- Telegram: @openagom
+- Discord: alexanderart
