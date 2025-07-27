@@ -25,6 +25,9 @@ It allows predictable execution windows on the blockchain, with minimal complexi
 
 Trap Logic
 Contract: HeartbeatBalanceTrap.sol
+solidity
+Копировать
+Редактировать
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -50,6 +53,9 @@ contract HeartbeatBalanceTrap is ITrap {
 }
 Response Contract
 Contract: FrequentAlertReceiver.sol
+solidity
+Копировать
+Редактировать
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -63,6 +69,10 @@ contract FrequentAlertReceiver {
 Deployment & Setup
 1. Deploy Contracts
 Use Foundry CLI to deploy both contracts:
+
+bash
+Копировать
+Редактировать
 forge create src/FrequentAlertReceiver.sol:FrequentAlertReceiver \
   --rpc-url https://ethereum-hoodi-rpc.publicnode.com \
   --private-key 0xYOUR_PRIVATE_KEY
@@ -72,6 +82,10 @@ forge create src/HeartbeatBalanceTrap.sol:HeartbeatBalanceTrap \
   --private-key 0xYOUR_PRIVATE_KEY
 2. Configure drosera.toml
 Update your drosera.toml file to register the trap:
+
+toml
+Копировать
+Редактировать
 [traps.heartbeat]
 path = "out/HeartbeatBalanceTrap.sol/HeartbeatBalanceTrap.json"
 response_contract = "0xYOUR_FrequentAlertReceiver_ADDRESS"
@@ -79,7 +93,10 @@ response_function = "notify()"
 Replace 0xYOUR_FrequentAlertReceiver_ADDRESS with the address from deployment.
 
 3. Apply Configuration
-4. DROSERA_PRIVATE_KEY=0xYOUR_PRIVATE_KEY drosera apply
+bash
+Копировать
+Редактировать
+DROSERA_PRIVATE_KEY=0xYOUR_PRIVATE_KEY drosera apply
 This registers your trap with the Drosera operator.
 
 Testing
