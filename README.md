@@ -1,33 +1,22 @@
-HeartbeatBalanceTrap
-Objective
+# HeartbeatBalanceTrap
+
+## Objective
 Create a functional Drosera trap that:
+- Tracks the blockchain’s `block.number` every time `collect()` is called.
+- Triggers a response every 3 blocks — independent of ETH balance changes.
+- Sends a signal to an external alert contract on a predictable, timed interval.
 
-Tracks the blockchain’s block.number every time collect() is called
+## Problem
+In some cases (monitoring system health, testing Drosera responsiveness, scheduled workflows), traps should trigger on a block schedule rather than balance changes.
 
-Triggers a response every 3 blocks, regardless of ETH balance changes
+## Solution
+Implement a time-based trap that activates every 3rd block regardless of ETH transfers or external input.
 
-Sends a signal to an external alert contract on a predictable, timed interval
+## Trap Logic
 
-Problem
-In some scenarios, it's necessary to trigger smart contract logic not based on external wallet activity or balance changes, but on timed intervals driven by block production.
+**Contract: HeartbeatBalanceTrap.sol**
 
-Examples include:
-
-Simulated heartbeat signals for uptime/liveness monitoring
-
-Scheduled on-chain workflows
-
-Infrastructure testing or monitoring Drosera responsiveness
-
-Solution
-This trap activates every 3rd block, using block.number % 3 == 0 as a simple and deterministic trigger.
-It allows predictable execution windows on the blockchain, with minimal complexity and no dependency on transfers or other data.
-
-Trap Logic
-Contract: HeartbeatBalanceTrap.sol
-solidity
-Копировать
-Редактировать
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -53,6 +42,7 @@ contract HeartbeatBalanceTrap is ITrap {
 }
 Response Contract
 Contract: FrequentAlertReceiver.sol
+
 solidity
 Копировать
 Редактировать
@@ -67,8 +57,7 @@ contract FrequentAlertReceiver {
     }
 }
 Deployment & Setup
-1. Deploy Contracts
-Use Foundry CLI to deploy both contracts:
+Deploy contracts with Foundry:
 
 bash
 Копировать
@@ -80,8 +69,7 @@ forge create src/FrequentAlertReceiver.sol:FrequentAlertReceiver \
 forge create src/HeartbeatBalanceTrap.sol:HeartbeatBalanceTrap \
   --rpc-url https://ethereum-hoodi-rpc.publicnode.com \
   --private-key 0xYOUR_PRIVATE_KEY
-2. Configure drosera.toml
-Update your drosera.toml file to register the trap:
+Update drosera.toml:
 
 toml
 Копировать
@@ -90,38 +78,33 @@ toml
 path = "out/HeartbeatBalanceTrap.sol/HeartbeatBalanceTrap.json"
 response_contract = "0xYOUR_FrequentAlertReceiver_ADDRESS"
 response_function = "notify()"
-Replace 0xYOUR_FrequentAlertReceiver_ADDRESS with the address from deployment.
+Apply changes:
 
-3. Apply Configuration
 bash
 Копировать
 Редактировать
 DROSERA_PRIVATE_KEY=0xYOUR_PRIVATE_KEY drosera apply
-This registers your trap with the Drosera operator.
+Testing the Trap
+Wait for new blocks on the Ethereum Hoodi testnet.
 
-Testing
-Wait for new blocks on the Ethereum Hoodi testnet
+On blocks divisible by 3, trap triggers with shouldRespond = true.
 
-On blocks divisible by 3 (e.g., block 123, 126, 129), the trap will trigger
+FrequentAlert event is emitted.
 
-You should observe:
+Extensions & Improvements
+Allow dynamic interval setting.
 
-shouldRespond = true
+Add balance delta or gas usage checks.
 
-A FrequentAlert event emitted in the response contract logs
+Chain this trap with anomaly detectors.
 
-Optional Improvements
-Make the block interval configurable via a constructor or setter
-
-Combine with balance or gas logic for more intelligent triggers
-
-Integrate with automation frameworks like Chainlink, Gelato, or webhooks
-
-Use to monitor uptime or regular behavior across multiple chains
+Use notify() to ping webhooks or trigger automation flows.
 
 Metadata
-Field	Value
-Created	July 27, 2025
-Author	Alexander ArtT
-Telegram	@openagom
-Discord	alexanderart
+Created: July 27, 2025
+
+Author: @Alexander_ArtT
+
+Telegram: @openagom
+
+Discord: alexanderart
