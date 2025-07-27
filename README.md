@@ -44,6 +44,7 @@ contract HeartbeatBalanceTrap is ITrap {
 
 **Contract: FrequentAlertReceiver.sol**
 
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -54,6 +55,7 @@ contract FrequentAlertReceiver {
         emit FrequentAlert("Frequent heartbeat alert triggered", block.number);
     }
 }
+
 
 
 ## Deployment & Setup
