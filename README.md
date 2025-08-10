@@ -28,15 +28,23 @@ interface ITrap {
 contract HeartbeatBalanceTrap is ITrap {
     address public constant target = 0x3B80fEDa59d8dCC17D23c0484767e54739C93103;
 
+    struct CollectOutput {
+        uint256 blockNumber;
+    }
+
     function collect() external view override returns (bytes memory) {
-        return abi.encode(block.number, target.balance);
+        return abi.encode(CollectOutput({
+            blockNumber: block.number
+        }));
     }
 
     function shouldRespond(bytes[] calldata data) external pure override returns (bool, bytes memory) {
-        (uint256 currentBlock, ) = abi.decode(data[0], (uint256, uint256));
-        if (currentBlock % 3 == 0) {
+        CollectOutput memory current = abi.decode(data[0], (CollectOutput));
+        
+        if (current.blockNumber % 3 == 0) {
             return (true, "");
         }
+
         return (false, "");
     }
 }
